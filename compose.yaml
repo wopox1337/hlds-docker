@@ -1,0 +1,34 @@
+version: '3.2'
+
+services:
+
+  cstrike-gameserver:
+    image: hlds:latest
+    ports:
+      - ${PORT}:${PORT}/udp
+      - ${PORT}:${PORT}/tcp
+    env_file: .env
+    build:
+      context: ./bullseye
+      args:
+        - REHLDS=latest
+        - REGAMEDLL=latest
+        - METAMOD=latest
+        - AMXMODX=1.10.0-git5466
+    command: [
+      "./hlds_run",
+        "-game cstrike",
+        "-strictportbind",
+        "-ip 0.0.0.0",
+        "-port ${PORT}",
+        "+map ${MAP}",
+        "-maxplayers ${MAXPLAYERS}",
+
+        # Debug 
+        # "-debug",
+        # "-condebug",
+        # "+log on",
+        # "+mp_logecho 1",
+        # "+localinfo mm_debug 3",
+    ]
+
