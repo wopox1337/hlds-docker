@@ -12,7 +12,8 @@ RUN set -x \
 		wget=1.21-1+deb11u1 \
 		ca-certificates=20210119 \
 		lib32z1=1:1.2.11.dfsg-2+deb11u2 \
-        libarchive-tools=3.4.3-2+deb11u1
+        libarchive-tools=3.4.3-2+deb11u1 \
+        gdb=10.1-1.7
 
 ENV STEAMAPPID  90
 ENV STEAMAPP    hlds

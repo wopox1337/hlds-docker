@@ -4,9 +4,13 @@ services:
 
   cstrike-gameserver:
     image: hlds:latest
+    ulimits:
+      core:
+        soft: 1073741824 # 1GB
+        hard: 1073741824 # 1GB
     ports:
-      - ${PORT}:${PORT}/udp
-      - ${PORT}:${PORT}/tcp
+      - ${PORT}:27015/udp
+      - ${PORT}:27015/tcp
     env_file: .env
     build:
       context: ./bullseye
@@ -20,7 +24,7 @@ services:
         "-game cstrike",
         "-strictportbind",
         "-ip 0.0.0.0",
-        "-port ${PORT}",
+        "-port 27015",
         "+map ${MAP}",
         "-maxplayers ${MAXPLAYERS}",
 
