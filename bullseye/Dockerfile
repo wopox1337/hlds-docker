@@ -21,7 +21,7 @@ ENV STEAMAPPDIR "${HOMEDIR}/${STEAMAPP}-dedicated"
 
 WORKDIR ${HOMEDIR}
 
-COPY --chmod=+x \
+COPY --chmod=755 \
 	etc/InstallAddons.sh \
 	etc/InstallApp.sh \
 	${HOMEDIR}
