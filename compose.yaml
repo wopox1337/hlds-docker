@@ -25,10 +25,10 @@ services:
         "-maxplayers ${MAXPLAYERS}",
 
         # Debug 
-        # "-debug",
-        # "-condebug",
-        # "+log on",
-        # "+mp_logecho 1",
+        "-debug",
+        "-condebug",
+        "+log on",
+        "+mp_logecho 1",
         # "+localinfo mm_debug 3",
     ]
 
