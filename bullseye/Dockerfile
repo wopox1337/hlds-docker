@@ -41,10 +41,18 @@ RUN ./InstallAddons.sh \
 	${METAMOD} \
 	${AMXMODX}
 
+# Copy .steam files
+RUN mv \
+	${STEAMCMDDIR}/steamservice.so \
+	${STEAMCMDDIR}/linux32/steamclient.so \
+	~/.steam/sdk32/
+
 # Cleanup
 RUN rm -rf \
-	InstallApp.sh \
-	InstallAddons.sh
+		InstallApp.sh \
+		InstallAddons.sh \
+		Steam \
+		steamcmd
 
 WORKDIR ${STEAMAPPDIR}
 
