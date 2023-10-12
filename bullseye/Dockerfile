@@ -15,6 +15,9 @@ RUN set -x \
         libarchive-tools=3.4.3-2+deb11u1 \
         gdb=10.1-1.7
 
+# Clean
+RUN rm -rf /var/lib/apt/lists/*
+
 ENV STEAMAPPID  90
 ENV STEAMAPP    hlds
 ENV STEAMAPPDIR "${HOMEDIR}/${STEAMAPP}-dedicated"
