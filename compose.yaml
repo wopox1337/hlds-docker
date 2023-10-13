@@ -3,7 +3,7 @@ version: '3.2'
 services:
 
   cstrike-gameserver:
-    image: hlds:latest
+    image: hlds:amxmodx
     ulimits:
       core:
         soft: 1073741824 # 1GB
@@ -11,6 +11,8 @@ services:
     ports:
       - ${PORT}:27015/udp
       - ${PORT}:27015/tcp
+    stdin_open: true
+    tty: true
     env_file: .env
     build:
       context: ./bullseye

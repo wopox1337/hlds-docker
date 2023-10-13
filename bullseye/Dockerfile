@@ -12,8 +12,7 @@ RUN set -x \
 		wget=1.21-1+deb11u1 \
 		ca-certificates=20210119 \
 		lib32z1=1:1.2.11.dfsg-2+deb11u2 \
-        libarchive-tools=3.4.3-2+deb11u1 \
-        gdb=10.1-1.7
+        libarchive-tools=3.4.3-2+deb11u1
 
 # Clean
 RUN rm -rf /var/lib/apt/lists/*
@@ -34,10 +33,10 @@ USER ${USER}
 
 RUN ./InstallApp.sh
 
-ARG REHLDS=none
-ARG REGAMEDLL=none
-ARG METAMOD=none
-ARG AMXMODX=none
+ARG REHLDS=latest
+ARG REGAMEDLL=latest
+ARG METAMOD=latest
+ARG AMXMODX=latest
 
 RUN ./InstallAddons.sh \
 	${REHLDS} \
@@ -53,21 +52,45 @@ RUN mv \
 
 # Cleanup
 RUN rm -rf \
-		InstallApp.sh \
-		InstallAddons.sh \
-		Steam \
-		steamcmd
+	InstallApp.sh InstallAddons.sh \
+	Steam steamcmd .steam/sdk64
+
+
+# Clean debian-slim server
+FROM debian:bookworm-slim
+
+RUN apt-get update \
+	&& apt-get install -y --no-install-recommends --no-install-suggests \
+		ca-certificates=20230311 \
+		libc6-i386=2.36-9+deb12u3 \
+		gdb-minimal=13.1-3 \
+	&& rm -rf /var/lib/apt/lists/*
+
+# Set environment variables
+ARG PUID=1000
+ENV USER steam
+ENV HOMEDIR "/home/${USER}"
+
+ENV STEAMAPP    hlds
+ENV STEAMAPPDIR "${HOMEDIR}/${STEAMAPP}-dedicated"
+
+# Set working directory
+WORKDIR $HOMEDIR
+
+# Create unprivileged user
+RUN useradd -u "${PUID}" -m "${USER}"
+
+COPY --from=build_stage /home/steam ${HOMEDIR}
+
 
 WORKDIR ${STEAMAPPDIR}
 
-# Default command when there are no arguments
-CMD [ \
-		"./hlds_run", \
-		"-game cstrike", \
-		"-ip 0.0.0.0", \
-		"-port 27015", \
-		"-strictportbind", \
-		"+sv_lan 0", \
-		"+map de_dust2", \
-		"-maxplayers 10" \
-	]
+USER ${USER}
+RUN echo "-----------${STEAMAPPDIR}-----------------"
+# RUN hlds_linux
+
+# ENTRYPOINT ["./hlds_run"]
+# CMD [ "-game cstrike", "-debug", "+sys_ticrate 5000", "-maxplayers 10", "+map de_dust2" ]
+
+# ./hlds_run -game cstrike -debug -maxplayers 10 +map de_dust2 +log on
+# docker run --rm -it --cpus=0.1 hlds:amxmodx
