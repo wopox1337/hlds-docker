@@ -89,8 +89,10 @@ USER ${USER}
 RUN echo "-----------${STEAMAPPDIR}-----------------"
 # RUN hlds_linux
 
-# ENTRYPOINT ["./hlds_run"]
-# CMD [ "-game cstrike", "-debug", "+sys_ticrate 5000", "-maxplayers 10", "+map de_dust2" ]
+EXPOSE 27016/udp
+
+ENTRYPOINT ["./hlds_run"]
+CMD [ "-game cstrike", "-debug", "+ip 0.0.0.0", "-port 27016" "-maxplayers 10", "+map de_dust2", "" ]
 
 # ./hlds_run -game cstrike -debug -maxplayers 10 +map de_dust2 +log on
 # docker run --rm -it --cpus=0.1 hlds:amxmodx
