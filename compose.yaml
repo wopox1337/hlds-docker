@@ -3,17 +3,17 @@ version: '3.2'
 services:
 
   cstrike-gameserver:
-    image: hlds:amxmodx
+    image: hlds
+    env_file: .env
     ulimits:
       core:
         soft: 1073741824 # 1GB
         hard: 1073741824 # 1GB
     ports:
-      - ${PORT}:27015/udp
-      - ${PORT}:27015/tcp
+      - ${PORT}:${PORT}/udp
+      - ${PORT}:${PORT}/tcp
     stdin_open: true
     tty: true
-    env_file: .env
     build:
       context: ./bullseye
       args:
@@ -26,7 +26,7 @@ services:
         "-game cstrike",
         "-strictportbind",
         "-ip 0.0.0.0",
-        "-port 27015",
+        "-port ${PORT}",
         "+map ${MAP}",
         "-maxplayers ${MAXPLAYERS}",
 
