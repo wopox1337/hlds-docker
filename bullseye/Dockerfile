@@ -57,7 +57,7 @@ RUN rm -rf \
 
 
 # Clean debian-slim server
-FROM debian:bookworm-slim
+FROM debian:12-slim
 
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends --no-install-suggests \
@@ -82,17 +82,13 @@ RUN useradd -u "${PUID}" -m "${USER}"
 
 COPY --from=build_stage /home/steam ${HOMEDIR}
 
-
 WORKDIR ${STEAMAPPDIR}
-
 USER ${USER}
-RUN echo "-----------${STEAMAPPDIR}-----------------"
-# RUN hlds_linux
 
 EXPOSE 27016/udp
 
 ENTRYPOINT ["./hlds_run"]
-CMD [ "-game cstrike", "-debug", "+ip 0.0.0.0", "-port 27016" "-maxplayers 10", "+map de_dust2", "" ]
+CMD [ "-game cstrike", "-debug", "+ip 0.0.0.0", "-port 27016" "-maxplayers 10", "+map de_dust2",  ]
 
 # ./hlds_run -game cstrike -debug -maxplayers 10 +map de_dust2 +log on
 # docker run --rm -it --cpus=0.1 hlds:amxmodx

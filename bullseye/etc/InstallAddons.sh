@@ -37,7 +37,15 @@ fi
 if [ "$REGAMEDLL_TAG" != "none" ]; then
 	echo -e "\033[1;43m > Starting download ReGameDLL ...\033[0m"
 	curl -sSL $(GetLatestGithubReleaseUrl "s1lentq/ReGameDLL_CS" $REGAMEDLL_TAG) | bsdtar -xf - --strip-components=2 --directory "${STEAMAPPDIR}" bin/linux32/*
+
+	# (`-bots` support) https://github.com/s1lentq/ReGameDLL_CS/blob/b53ebb203794446b6ccb35d0ca975b6eef3de93d/README.md#how-to-install-zbot-for-cs-16
+	curl -sSL https://github.com/s1lentq/ReGameDLL_CS/blob/b53ebb203794446b6ccb35d0ca975b6eef3de93d/regamedll/extra/zBot/bot_profiles.zip?raw=true | bsdtar -xf - --directory "${STEAMAPPDIR}"
+
+	# (`-host-improv` support) https://github.com/s1lentq/ReGameDLL_CS/blob/b53ebb203794446b6ccb35d0ca975b6eef3de93d/README.md#how-to-install-cscz-hostage-ai-for-cs-16
+	curl -sSL https://github.com/s1lentq/ReGameDLL_CS/blob/b53ebb203794446b6ccb35d0ca975b6eef3de93d/regamedll/extra/HostageImprov/host_improv.zip?raw=true | bsdtar -xf - --directory "${STEAMAPPDIR}"
 fi
+
+
 
 # Install Metamod-R or Metamod-P 1.21p38
 if [ "$METAMOD_TAG" != "none" ]; then
